@@ -101,18 +101,20 @@
             box-shadow: 0 12px 30px rgba(0,0,0,0.15);
         }
         .two-columns {
-            display: flex;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
             gap: 40px;
-            justify-content: space-between;
         }
         .column {
-            flex: 1 1 45%;
             background-color: #fff;
             padding: 30px;
             border-radius: 15px;
             box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-            transition: transform 0.5s ease, box-shadow 0.5s ease;
+            transition: transform 0.5s ease, box-shadow 0.5s ease, opacity 0.5s ease;
+            opacity: 0;
+        }
+        .column.visible {
+            opacity: 1;
         }
         .column:hover {
             transform: scale(1.03) rotateX(2deg);
@@ -126,7 +128,13 @@
             margin-bottom: 15px;
             position: relative;
             padding-left: 30px;
-            transition: color 0.3s ease, transform 0.3s ease;
+            transition: color 0.3s ease, transform 0.3s ease, opacity 0.3s ease;
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+        ul li.visible {
+            opacity: 1;
+            transform: translateX(0);
         }
         ul li::before {
             content: '✔';
@@ -180,6 +188,10 @@
             font-size: 1.5em;
             color: #2E5A88;
             font-weight: bold;
+            transition: transform 0.3s ease;
+        }
+        .choice-card:hover h3 {
+            transform: scale(1.1);
         }
         .cotizador {
             display: none; /* Hidden by default */
@@ -208,6 +220,12 @@
             position: relative;
             overflow: hidden;
             transition: transform 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        .form-group.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
         .form-group:hover {
             transform: translateY(-3px);
@@ -245,6 +263,9 @@
             transform: scale(1.02);
             outline: none;
         }
+        select:hover {
+            transform: scale(1.02);
+        }
         input[type="range"] {
             width: 100%;
             margin: 10px 0;
@@ -253,7 +274,7 @@
             border-radius: 5px;
             background: #ddd;
             outline: none;
-            transition: background 0.3s ease;
+            transition: background 0.3s ease, transform 0.3s ease;
         }
         input[type="range"]::-webkit-slider-thumb {
             appearance: none;
@@ -264,6 +285,9 @@
             cursor: pointer;
             transition: transform 0.3s ease;
         }
+        input[type="range"]:hover {
+            transform: scale(1.05);
+        }
         input[type="range"]:hover::-webkit-slider-thumb {
             transform: scale(1.2);
         }
@@ -273,6 +297,10 @@
             color: #2E5A88;
             margin-top: 5px;
             animation: fadeIn 0.3s ease;
+            transition: color 0.3s ease;
+        }
+        .range-value:hover {
+            color: #1a3f66;
         }
         .checkbox-group {
             display: flex;
@@ -306,6 +334,9 @@
         .checkbox-group input:checked + span {
             font-weight: bold;
         }
+        .checkbox-group input:hover {
+            transform: scale(1.4);
+        }
         .pack-container {
             display: grid;
             grid-template-columns: 1fr;
@@ -322,6 +353,12 @@
             transition: transform 0.4s ease, box-shadow 0.4s ease, background-color 0.4s ease;
             position: relative;
             overflow: hidden;
+            opacity: 0;
+            transform: scale(0.95);
+        }
+        .pack-description.visible {
+            opacity: 1;
+            transform: scale(1);
         }
         .pack-description::after {
             content: '';
@@ -413,6 +450,10 @@
             margin-top: 60px;
             font-size: 0.9em;
             color: #777;
+            transition: transform 0.5s ease;
+        }
+        .footer:hover {
+            transform: translateY(-5px);
         }
         .social-buttons {
             display: flex;
@@ -431,7 +472,7 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
         .social-button:hover {
-            transform: scale(1.1);
+            transform: scale(1.1) rotate(5deg);
             box-shadow: 0 6px 15px rgba(0,0,0,0.3);
         }
         .whatsapp {
@@ -455,7 +496,7 @@
             transition: transform 0.5s ease;
         }
         .image-placeholder img:hover {
-            transform: scale(1.05);
+            transform: scale(1.05) rotate(2deg);
         }
         @keyframes pulse {
             0% { transform: scale(1); }
@@ -495,8 +536,7 @@
         }
         @media (max-width: 768px) {
             .two-columns {
-                display: flex;
-                flex-direction: column;
+                grid-template-columns: 1fr;
                 gap: 20px;
             }
             .cotizador {
@@ -525,6 +565,14 @@
                 flex-direction: column;
                 gap: 10px;
             }
+            .column {
+                padding: 25px;
+                font-size: 1.1em; /* Mejora legibilidad en mobile */
+                line-height: 1.6;
+            }
+            ul li {
+                margin-bottom: 20px; /* Más espacio para legibilidad */
+            }
         }
     </style>
 </head>
@@ -546,8 +594,8 @@
         </section>
 
         <section id="por-que-y-beneficios" class="two-columns">
-            <div class="column">
-                <h2>Por qué eCivil BIM Solutions</h2>
+            <div class="column" style="animation: slideInLeft 1s ease-in-out forwards;">
+                <h2>¿Por qué eCivil BIM Solutions?</h2>
                 <ul>
                     <li>Certificación Autodesk® — equipo acreditado en Revit y Navisworks, procesos validados.</li>
                     <li>Software licenciado — entregables fiables y total trazabilidad de versiones.</li>
@@ -556,8 +604,8 @@
                     <li>Enfoque integral — un modelo único que integra arquitectura, estructura e instalaciones.</li>
                 </ul>
             </div>
-            <div class="column">
-                <h2>Beneficios para su proyecto</h2>
+            <div class="column" style="animation: slideInRight 1s ease-in-out forwards;">
+                <h2>Beneficios para tu proyecto</h2>
                 <ul>
                     <li>Optimización de inversión — reducción de retrabajos y sobrecostos por detección temprana.</li>
                     <li>Construcción sin interferencias — conflictos resueltos antes de obra.</li>
@@ -639,7 +687,7 @@
                             <option value="1.00">C Edificaciones comunes</option>
                             <option value="1.15">B Centros de reunión</option>
                             <option value="1.30">A2 Infraestructura esencial</option>
-                            <option value="1.85">A1 Hospitales y clínicas</option>
+                            <option value="2.1">A1 Hospitales y clínicas</option>
                         </select>
                     </div>
                     
@@ -666,7 +714,7 @@
                         <label for="ratio6">Sótanos o cimentaciones especiales</label>
                         <select id="ratio6">
                             <option value="1.00">No</option>
-                            <option value="1.30">Sí</option>
+                            <option value="1.35">Sí</option>
                         </select>
                     </div>
                     
@@ -674,11 +722,11 @@
                     <div class="form-group">
                         <label>Especialidades incluidas</label>
                         <div class="checkbox-group">
-                            <label><input type="checkbox" value="1.40" class="ratio7"> <span>Arquitectura</span></label>
-                            <label><input type="checkbox" value="1.40" class="ratio7"> <span>Estructuras</span></label>
+                            <label><input type="checkbox" value="1.55" class="ratio7"> <span>Arquitectura</span></label>
+                            <label><input type="checkbox" value="1.50" class="ratio7"> <span>Estructuras</span></label>
                             <label><input type="checkbox" value="1.25" class="ratio7"> <span>Instalaciones eléctricas</span></label>
                             <label><input type="checkbox" value="1.20" class="ratio7"> <span>Instalaciones sanitarias</span></label>
-                            <label><input type="checkbox" value="1.25" class="ratio7"> <span>Mecánicas</span></label>
+                            <label><input type="checkbox" value="1.3" class="ratio7"> <span>Mecánicas</span></label>
                         </div>
                     </div>
                     
@@ -702,7 +750,7 @@
                         <select id="pack">
                             <option value="0" selected>Seleccione un Pack</option>
                             <option value="900">Pack 1 – Modelado 3D</option>
-                            <option value="1100">Pack 2 – Coordinación de interferencias</option>
+                            <option value="1015">Pack 2 – Coordinación de interferencias</option>
                             <option value="1300">Pack 3 – Control de obra (4D y 5D)</option>
                         </select>
                     </div>
@@ -740,12 +788,21 @@
     <script>
         function showCotizador() {
             document.getElementById('cotizador-section').style.display = 'block';
+            document.querySelector('.cotizador').style.display = 'grid';
             document.getElementById('direct-whatsapp-section').style.display = 'none';
+            document.querySelector('.choice-section').style.display = 'none';
+            // Trigger animations for form groups and packs
+            setTimeout(() => {
+                document.querySelectorAll('.form-group, .pack-description').forEach((el, index) => {
+                    setTimeout(() => el.classList.add('visible'), index * 100);
+                });
+            }, 100);
         }
 
         function showDirectWhatsapp() {
             document.getElementById('cotizador-section').style.display = 'none';
             document.getElementById('direct-whatsapp-section').style.display = 'block';
+            document.querySelector('.choice-section').style.display = 'none';
         }
 
         // Animaciones al scroll
@@ -754,6 +811,17 @@
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
+                    // Animate columns and list items
+                    if (entry.target.id === 'por-que-y-beneficios') {
+                        const columns = entry.target.querySelectorAll('.column');
+                        columns.forEach((col, index) => {
+                            setTimeout(() => col.classList.add('visible'), index * 300);
+                        });
+                        const listItems = entry.target.querySelectorAll('ul li');
+                        listItems.forEach((li, index) => {
+                            setTimeout(() => li.classList.add('visible'), index * 100 + 500);
+                        });
+                    }
                 }
             });
         }, { threshold: 0.1 });
